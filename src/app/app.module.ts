@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TopTwentyComponent } from './top-twenty/top-twenty.component';
 import { LastDecadeComponent } from './last-decade/last-decade.component';
 import { FavoritesComponent } from './favorites/favorites.component';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { FavoritesComponent } from './favorites/favorites.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]
