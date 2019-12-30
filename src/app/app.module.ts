@@ -8,6 +8,7 @@ import { TopTwentyComponent } from './top-twenty/top-twenty.component';
 import { LastDecadeComponent } from './last-decade/last-decade.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { MatTableModule } from '@angular/material/table';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { MatTableModule } from '@angular/material/table';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatTableModule
+    MatTableModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
