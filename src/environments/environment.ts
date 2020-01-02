@@ -6,10 +6,15 @@ export const environment = {
   production: false,
   api: {
     url: 'https://api.themoviedb.org/3/discover/movie',
+    genres_url: 'https://api.themoviedb.org/3/genre/movie/list',
     params: {
       api_key: '9b364caf056220506cfca11b3b8cf730',
       sort_by: 'popularity.desc',
       limit: 20
+    },
+    genres_params: {
+      api_key: '9b364caf056220506cfca11b3b8cf730',
+      language: 'en-US'
     },
     poster_path: 'https://image.tmdb.org/t/p/w500/'
   }

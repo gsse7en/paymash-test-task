@@ -1,7 +1,29 @@
 table {
   width: 100%;
 }
+
+.mat-cell {
+  padding: 5px 10px;
+}
+
 .poster {
   width: 50px;
   border-radius: 5px;
+}
+
+.rating {
+  color: orange;
+  vertical-align: middle;
+}
+
+.favorite {
+  color: #2B78FE;
+}
+
+th {
+  font-weight: bold;
+}
+
+.mat-row:nth-child(even), th {
+  background-color: whitesmoke;
 }

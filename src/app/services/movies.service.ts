@@ -17,7 +17,7 @@ export class MoviesService {
     this.fetchMovies();
   }
 
-  private formatMovies(moviesToFormat): Movie[] {
+  private formatMovies(moviesToFormat, genres): Movie[] {
     return moviesToFormat.map(el => {
       return {
         id: el.id,
@@ -25,7 +25,7 @@ export class MoviesService {
         name: el.title,
         year: el.release_date,
         rating: el.vote_average,
-        genre: el.genre_ids.join(),
+        genre: el.genre_ids.map(genreEl => genres.find(genreMapEl => genreMapEl.id === genreEl).name).join(', '),
         isFavorite: false
       };
     });
@@ -34,8 +34,8 @@ export class MoviesService {
   public async fetchMovies(): Promise<void> {
     try {
       const movies = await this.apiClient.get<any>({url: environment.api.url, params: environment.api.params});
-      console.log(movies);
-      this.moviesSubject$.next(this.formatMovies(movies.results));
+      const genres = await this.apiClient.get<any>({url: environment.api.genres_url, params: environment.api.genres_params});
+      this.moviesSubject$.next(this.formatMovies(movies.results, genres.genres));
     } catch (error) {
       console.error(error);
     }
