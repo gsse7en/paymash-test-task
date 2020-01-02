@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
+import { MoviesService } from '../../services/movies.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-last-decade',
   templateUrl: './last-decade.component.html',
   styleUrls: ['./last-decade.component.scss']
 })
-export class LastDecadeComponent implements OnInit {
+export class LastDecadeComponent implements OnInit, OnDestroy {
   // Pie
   public pieChartOptions: ChartOptions = {
     responsive: true,
@@ -24,54 +27,68 @@ export class LastDecadeComponent implements OnInit {
       },
     }
   };
-  public pieChartLabels: Label[] = [['Download', 'Sales'], ['In', 'Store', 'Sales'], 'Mail Sales'];
-  public pieChartData: number[] = [300, 500, 100];
+  public pieChartLabels: Label[] = [];
+  public pieChartData: number[] = [];
   public pieChartType: ChartType = 'pie';
   public pieChartLegend = true;
   public pieChartPlugins = [pluginDataLabels];
   public pieChartColors = [
     {
-      backgroundColor: ['rgba(255,0,0,0.3)', 'rgba(0,255,0,0.3)', 'rgba(0,0,255,0.3)'],
+      backgroundColor: [],
     },
   ];
+  private unsubscribe: Subject<void> = new Subject();
 
-  constructor() { }
+  constructor(private movies: MoviesService) { }
 
   ngOnInit() {
+    this.movies.movies$.pipe(takeUntil(this.unsubscribe)).subscribe(res => {
+      this.fillTable(res);
+    });
   }
 
-  // events
-  public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
+  ngOnDestroy() {
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
-  public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
+  private filterLastDecade(data): number[][] {
+    const thisYear = new Date().getFullYear();
+    return data.filter(el => el[0] < thisYear && el[0] >= thisYear - 10);
   }
 
-  changeLabels() {
-    const words = ['hen', 'variable', 'embryo', 'instal', 'pleasant', 'physical', 'bomber', 'army', 'add', 'film',
-      'conductor', 'comfortable', 'flourish', 'establish', 'circumstance', 'chimney', 'crack', 'hall', 'energy',
-      'treat', 'window', 'shareholder', 'division', 'disk', 'temptation', 'chord', 'left', 'hospital', 'beef',
-      'patrol', 'satisfied', 'academy', 'acceptance', 'ivory', 'aquarium', 'building', 'store', 'replace', 'language',
-      'redeem', 'honest', 'intention', 'silk', 'opera', 'sleep', 'innocent', 'ignore', 'suite', 'applaud', 'funny'];
-    const randomWord = () => words[Math.trunc(Math.random() * words.length)];
-    this.pieChartLabels = Array.apply(null, { length: 3 }).map(_ => randomWord());
+  private getRandomValue(): number {
+    return Math.ceil(Math.random() * 256);
   }
 
-  addSlice() {
-    this.pieChartLabels.push(['Line 1', 'Line 2', 'Line 3']);
-    this.pieChartData.push(400);
-    this.pieChartColors[0].backgroundColor.push('rgba(196,79,244,0.3)');
+  private fillTable(res): void {
+    const counts = {};
+    const years = res.map(el => {
+      return el.year;
+    });
+    for (const el of years) {
+      counts[el] = 1 + (counts[el] || 0);
+    }
+    const sortable = [];
+    for (const el in counts) {
+      if (counts.hasOwnProperty(el)) {
+        sortable.push([+el, counts[el]]);
+        this.pieChartColors[0].backgroundColor.push(`rgba(
+          ${this.getRandomValue()},
+          ${this.getRandomValue()},
+          ${this.getRandomValue()},
+        0.3)`);
+      }
+    }
+    sortable.sort((a, b) => {
+      return a[0] - b[0];
+    });
+    const filteredYears = this.filterLastDecade(sortable);
+
+    for (const [key, value] of filteredYears) {
+      this.pieChartLabels.push(key.toString());
+      this.pieChartData.push(value);
+    }
   }
 
-  removeSlice() {
-    this.pieChartLabels.pop();
-    this.pieChartData.pop();
-    this.pieChartColors[0].backgroundColor.pop();
-  }
-
-  changeLegendPosition() {
-    this.pieChartOptions.legend.position = this.pieChartOptions.legend.position === 'left' ? 'top' : 'left';
-  }
 }

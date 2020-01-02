@@ -24,7 +24,7 @@ export class MoviesService {
         id: el.id,
         poster: environment.api.poster_path + el.poster_path,
         name: el.title,
-        year: el.release_date,
+        year: +el.release_date.slice(0, 4),
         rating: el.vote_average,
         genre: el.genre_ids.map(genreEl => genres.find(genreMapEl => genreMapEl.id === genreEl).name).join(', '),
         isFavorite: false
