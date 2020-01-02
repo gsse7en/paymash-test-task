@@ -9,7 +9,7 @@
 
         <ng-container matColumnDef="poster">
             <th mat-header-cell *matHeaderCellDef> Poster </th>
-            <td mat-cell *matCellDef="let element"> <img [src]="element.poster"> </td>
+            <td mat-cell *matCellDef="let element"> <img class="poster" [src]="element.poster"> </td>
         </ng-container>
 
         <ng-container matColumnDef="name">
@@ -34,12 +34,15 @@
 
         <ng-container matColumnDef="country">
             <th mat-header-cell *matHeaderCellDef> Country </th>
-            <td mat-cell *matCellDef="let element"> {{element.country}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.country || '-'}} </td>
         </ng-container>
 
         <ng-container matColumnDef="director">
             <th mat-header-cell *matHeaderCellDef> Director </th>
-            <td mat-cell *matCellDef="let element"> <a [href]="element.director.link"> {{element.director.name}} </a></td>
+            <td mat-cell *matCellDef="let element">
+                <a *ngIf="element.director; else noData" [href]="element.director.link"> {{element.director.name}} </a>
+                <ng-template #noData><span>-</span></ng-template>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="favorite">

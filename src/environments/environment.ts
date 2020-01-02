@@ -10,7 +10,8 @@ export const environment = {
       api_key: '9b364caf056220506cfca11b3b8cf730',
       sort_by: 'popularity.desc',
       limit: 20
-    }
+    },
+    poster_path: 'https://image.tmdb.org/t/p/w500/'
   }
 };
 

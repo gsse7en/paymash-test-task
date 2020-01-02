@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TopTwentyComponent } from './top-twenty/top-twenty.component';
-import { LastDecadeComponent } from './last-decade/last-decade.component';
-import { FavoritesComponent } from './favorites/favorites.component';
+import { TopTwentyComponent } from './components/top-twenty/top-twenty.component';
+import { LastDecadeComponent } from './components/last-decade/last-decade.component';
+import { FavoritesComponent } from './components/favorites/favorites.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'top-twenty', pathMatch: 'full' },
