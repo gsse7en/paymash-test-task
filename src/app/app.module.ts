@@ -8,6 +8,7 @@ import { TopTwentyComponent } from './components/top-twenty/top-twenty.component
 import { LastDecadeComponent } from './components/last-decade/last-decade.component';
 import { FavoritesComponent } from './components/favorites/favorites.component';
 import { MatTableModule } from '@angular/material/table';
+import { MatCardModule } from '@angular/material/card';
 import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
@@ -22,6 +23,7 @@ import { ChartsModule } from 'ng2-charts';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatTableModule,
+    MatCardModule,
     ChartsModule
   ],
   providers: [],

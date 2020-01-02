@@ -1,0 +1,38 @@
+table {
+  width: 100%;
+}
+
+.mat-cell {
+  padding: 5px 10px;
+}
+
+.poster {
+  width: 50px;
+  border-radius: 5px;
+}
+
+.rating {
+  color: orange;
+  vertical-align: middle;
+}
+
+.favorite {
+  color: #2B78FE;
+}
+
+.favorite:hover {
+  cursor: pointer;
+}
+
+th {
+  font-weight: bold;
+}
+
+th:not(:first-child):not(:last-child) {
+  padding: 0px 10px !important;
+}
+
+.mat-row:nth-child(even),
+th {
+  background-color: whitesmoke;
+}

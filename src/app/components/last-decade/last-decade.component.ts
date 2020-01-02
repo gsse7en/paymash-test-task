@@ -3,6 +3,7 @@ import { ChartType, ChartOptions } from 'chart.js';
 import { Label } from 'ng2-charts';
 import * as pluginDataLabels from 'chartjs-plugin-datalabels';
 import { MoviesService } from '../../services/movies.service';
+import { Movie } from '../../models/movie';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -12,7 +13,6 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./last-decade.component.scss']
 })
 export class LastDecadeComponent implements OnInit, OnDestroy {
-  // Pie
   public pieChartOptions: ChartOptions = {
     responsive: true,
     legend: {
@@ -52,7 +52,7 @@ export class LastDecadeComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  private filterLastDecade(data): number[][] {
+  private filterLastDecade(data: number[][]): number[][] {
     const thisYear = new Date().getFullYear();
     return data.filter(el => el[0] < thisYear && el[0] >= thisYear - 10);
   }
@@ -61,7 +61,7 @@ export class LastDecadeComponent implements OnInit, OnDestroy {
     return Math.ceil(Math.random() * 256);
   }
 
-  private fillTable(res): void {
+  private fillTable(res: Movie[]): void {
     const counts = {};
     const years = res.map(el => {
       return el.year;

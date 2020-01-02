@@ -20,10 +20,19 @@ table {
   color: #2B78FE;
 }
 
+.favorite:hover {
+  cursor: pointer;
+}
+
 th {
   font-weight: bold;
 }
 
-.mat-row:nth-child(even), th {
+th:not(:first-child):not(:last-child) {
+  padding: 0px 10px !important;
+}
+
+.mat-row:nth-child(even),
+th {
   background-color: whitesmoke;
 }

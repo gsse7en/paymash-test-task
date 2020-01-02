@@ -18,7 +18,7 @@ export class MoviesService {
       this.fetchMovies();
   }
 
-  private formatMovies(moviesToFormat, genres): Movie[] {
+  private formatMovies(moviesToFormat: any[], genres: any[]): Movie[] {
     return moviesToFormat.map(el => {
       return {
         id: el.id,
@@ -30,6 +30,11 @@ export class MoviesService {
         isFavorite: false
       };
     });
+  }
+
+  public setMovies(movies: Movie[]): void {
+    this.moviesSubject$.next(movies);
+    this.storageService.setMovies(movies);
   }
 
   public async fetchMovies(): Promise<void> {

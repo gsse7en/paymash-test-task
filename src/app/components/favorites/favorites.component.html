@@ -1,1 +1,76 @@
-<p>favorites works!</p>
+<div class="content">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>Favorite Movies</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <div *ngIf="dataSource.data.length; else noContent">
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef> Id </th>
+                        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="poster">
+                        <th mat-header-cell *matHeaderCellDef> Poster </th>
+                        <td mat-cell *matCellDef="let element">
+                            <a [href]="element.poster" target="_blank">
+                                <img class="poster" [src]="element.poster">
+                            </a>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef> Name </th>
+                        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="year">
+                        <th mat-header-cell *matHeaderCellDef> Year </th>
+                        <td mat-cell *matCellDef="let element"> {{element.year}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="rating">
+                        <th mat-header-cell *matHeaderCellDef> Rating </th>
+                        <td mat-cell *matCellDef="let element">
+                            <i class="material-icons rating">star</i> {{element.rating}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="genre">
+                        <th mat-header-cell *matHeaderCellDef> Genre </th>
+                        <td mat-cell *matCellDef="let element"> {{element.genre}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="country">
+                        <th mat-header-cell *matHeaderCellDef> Country </th>
+                        <td mat-cell *matCellDef="let element"> {{element.country || '-'}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="director">
+                        <th mat-header-cell *matHeaderCellDef> Director </th>
+                        <td mat-cell *matCellDef="let element">
+                            <a *ngIf="element.director; else noData" [href]="element.director.link">
+                                {{element.director.name}} </a>
+                            <ng-template #noData><span>-</span></ng-template>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="favorite">
+                        <th mat-header-cell *matHeaderCellDef> Favorite </th>
+                        <td mat-cell *matCellDef="let element">
+                            <div (click)="toggleFavorite(element)">
+                                <i *ngIf="element.isFavorite; else notFav" class="material-icons favorite">star</i>
+                                <ng-template #notFav><i class="material-icons favorite">star_border</i></ng-template>
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+            <ng-template #noContent>No favorite movies yet.</ng-template>
+        </mat-card-content>
+    </mat-card>
+</div>
