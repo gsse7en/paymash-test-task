@@ -1,20 +1,21 @@
 import { Injectable } from '@angular/core';
 import { ApiClientService } from './api-client.service';
+import { StorageService } from './storage.service';
 import { environment } from '../../environments/environment';
-import { Observable, Subject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Movie } from '../models/movie';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MoviesService {
-  private apiClient: ApiClientService;
-  private moviesSubject$: Subject<Movie[]> = new Subject();
+  private moviesSubject$: BehaviorSubject<Movie[]> = new BehaviorSubject([]);
   public readonly movies$: Observable<Movie[]> = this.moviesSubject$.asObservable();
 
-  constructor(apiClient: ApiClientService) {
-    this.apiClient = apiClient;
-    this.fetchMovies();
+  constructor(
+    private apiClient: ApiClientService,
+    private storageService: StorageService) {
+      this.fetchMovies();
   }
 
   private formatMovies(moviesToFormat, genres): Movie[] {
@@ -32,10 +33,17 @@ export class MoviesService {
   }
 
   public async fetchMovies(): Promise<void> {
+    const localMovies = this.storageService.fetchMovies();
+    if (localMovies) {
+      setTimeout(() => this.moviesSubject$.next(localMovies));
+      return;
+    }
     try {
-      const movies = await this.apiClient.get<any>({url: environment.api.url, params: environment.api.params});
-      const genres = await this.apiClient.get<any>({url: environment.api.genres_url, params: environment.api.genres_params});
-      this.moviesSubject$.next(this.formatMovies(movies.results, genres.genres));
+      const apiMovies = await this.apiClient.get<any>({ url: environment.api.url, params: environment.api.params });
+      const genres = await this.apiClient.get<any>({ url: environment.api.genres_url, params: environment.api.genres_params });
+      const movies = this.formatMovies(apiMovies.results, genres.genres);
+      this.moviesSubject$.next(movies);
+      this.storageService.setMovies(movies);
     } catch (error) {
       console.error(error);
     }
